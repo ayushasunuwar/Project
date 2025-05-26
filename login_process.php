@@ -3,8 +3,8 @@ session_start();
 include_once 'db_connection.php';
 
 if (isset($_POST['submit'])) {
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
     if (!empty($email) && !empty($password)) {
         $stmt = $conn->prepare("SELECT user_id, password_hash, is_admin FROM users WHERE email = ?");
@@ -24,14 +24,14 @@ if (isset($_POST['submit'])) {
                 }
                
             } else {
-                $_SESSION['error'] = "Invalid email or password.";
+                echo "<script>alert('Invalid email or password.')</script>";
             }
         } else {
-            $_SESSION['error'] = "Invalid email or password.";
+            echo "<script>alert('Invalid email or password.')</script>";
         }
         $stmt->close();
     } else {
-        $_SESSION['error'] = "Please fill in all fields.";
+        echo "<script>alert('Please fill in all fields.')</script>";
     }
 
     header("Location: login.php");

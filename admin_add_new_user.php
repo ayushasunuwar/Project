@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Database connection (replace with your own credentials)
-    $conn = new mysqli('localhost', 'username', 'password', 'database');
+    $conn = new mysqli('localhost', 'username', 'password', 'summerproject');
 
     // SQL query to insert the user
     $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");

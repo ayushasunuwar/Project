@@ -120,6 +120,14 @@ include 'db_connection.php';
             font-size: 14px;
         }
 
+        .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px; /* Adjust as needed */
+    margin-bottom: 10px;
+    text-align: left;
+}
+
     </style>
 </head>
 <body>
@@ -134,12 +142,18 @@ include 'db_connection.php';
         <h2>Login</h2>
         <p>Welcome back. Please enter your details.</p>
 
-        <form action="login_process.php" method="POST">
+        <form action="login_process.php" method="POST" name="loginForm" id="loginForm">
             <label for="email"><i class="fa-solid fa-envelope"></i></label>
-            <input type="email" id="email" name="email" required placeholder="Enter your email">
+            <input type="email" id="email" name="email" placeholder="Enter your email" >
+            <span><p class="error-message"  style="display:hidden;" id="emailError"></p></span>
 
             <label for="password"><i class="fa-solid fa-unlock"></i></label>
-            <input type="password" id="password" name="password" required placeholder="Enter your password">
+            <!-- <input type="password" id="password" name="password" required placeholder="Enter your password"> -->
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" >
+                    <i id="togglePassword" class="fa fa-eye" style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                    <span><p class="error-message"  style="display:hidden;" id="passwordError"></p></span>
+                </div>
         <br>
             <div class="forgot">
                <p>Forgot password?  <a href="forgot_password.php">Click here</a></p>
@@ -153,6 +167,69 @@ include 'db_connection.php';
     <div class="footer">
         <?php include 'footer.php'; ?>
     </div>
+
+    <script>
+        //toggle password
+          const togglePassword = document.getElementById('togglePassword');
+          const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle icon between eye and eye-slash
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        //client side
+        const form = document.getElementById("loginForm");
+        
+
+        form.addEventListener('submit', function(event){
+             const emailI = document.getElementById("email").value.trim();
+             const passwordInput = document.getElementById("password").value.trim();
+             let email_error = document.getElementById("emailError");
+             let passowrd_error = document.getElementById("passwordError");
+
+            let valid = true;
+
+            //clear previous message
+            email_error.style.display = 'none';
+            emailError.textContent = '';
+            emailInput.style.borderColor = '#ddd';
+
+            passwordError.style.display = 'none';
+            passwordError.textContent = '';
+            passwordInputField.style.borderColor = '#ddd';
+            
+            //validate email
+            if(email === ''){
+                emailError.textContent = 'Email cannot be empty.';
+                emailError.style.display = 'block';
+                emailInput.style.borderColor = 'red';
+                valid = false;
+            }else if(!isValidEmail(email)){
+                emailError.textContent = 'Please enter a valid email address.';
+                emailError.style.display = 'block';
+                emailInput.style.borderColor = 'red';
+                valid = false;
+            }
+
+            //validate password
+            if (password === ''){
+                passwordError.textContent = 'Password cannot be empty.';
+                passwordError.style.display = 'block';
+                passwordInputField.style.borderColor = 'red';
+                valid = false;
+            }
+
+            if(!valid){
+                event.preventDefault(); // stop form submission id validation fails
+            }
+        });
+
+    </script>
 
 </body>
 </html>

@@ -54,61 +54,6 @@
     }
 ?>
 <body>
-<div class="sidebar">
-        <h4 class="text-center">Welcome <?php echo $_SESSION["username"]; ?></h4>
-        <a href="view_payslip.php">View Payslip</a>
-        <a href="#">Payment History</a>
-        <a href="#">Settings</a>
-        <a href="logout.php">Logout</a>
-    </div>
 
-    <div class="content">
-        <nav class="navbar navbar-light bg-light mb-4">
-            <div class="container-fluid">
-                <span class="navbar-brand"><?php echo 'Welcome'?></span>
-                <input class="form-control w-25" type="search" placeholder="Search" aria-label="Search">
-            </div>
-        </nav>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Current Salary</h5>
-                        <p class="card-text"><?php?></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-success mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Last Payment</h5>
-                        <p class="card-text"><?php?></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Next Payment</h5>
-                        <p class="card-text"><?php?></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h3>Payment History</h3>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
 </body>
 </html>

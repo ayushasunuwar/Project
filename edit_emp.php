@@ -1,48 +1,48 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="edit_emp.css">
 
 <?php
     include 'db_connection.php';
-    $id = intval($_GET['id']);
+
+    if(isset($_GET['id'])){
+        $id = intval($_GET['id']);
    
-    // Fetch employee data securely
-    $sql = "SELECT * FROM employee WHERE empID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $data = $res->fetch_assoc();
+        // Fetch employee data securely
+        $sql = "SELECT * FROM employee WHERE empID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $data = $res->fetch_assoc();
 
-    if (!$data) {
-        die("Employee not found.");
-    }
-
-    if(isset($_POST["submit"])){
-        $empID = intval($_POST['empID']);
-        $fullName = trim($_POST['fullname']);
-        $dept = trim($_POST['department']);
-        $salary = intval($_POST['salary']);
-    
-        // Secure update query using prepared statements
-        $sql2 = "UPDATE employee SET empID = ?, empName = ?, department = ?, salary = ? WHERE empID = ?";
-        $stmt2 = $conn->prepare($sql2);
-        $stmt2->bind_param("isssi", $empID, $fullName, $dept, $salary, $id);
-        $stmt2->execute();
-
-        if ($stmt2->affected_rows === 1) {
-            echo "<script>
-                    alert('Salary record deleted successfully.');
-                    </script>";
-            header("Location: manageEmployee.php");
+        if (!$data) {
+            echo "<script>alert('Employee not found'); window.location.href = 'admin_employees.php';</script>";
             exit();
-        } else {
-            echo "<script>
-                    alert('Update failed.');
-                    window.location.href = 'manageEmployee.php';
-                </script>";
         }
+
+        if(isset($_POST["submit"])){
+            $fullName = trim($_POST['fullname']);
+            $dept = trim($_POST['department']);
+            $salary = intval($_POST['salary']);
+        
+            // Secure update query using prepared statements
+            $sql2 = "UPDATE employee SET empName = ?, department = ?, salary = ? WHERE empID = ?";
+            $stmt2 = $conn->prepare($sql2);
+            $stmt2->bind_param("sssi", $fullName, $dept, $salary, $id);
+            $stmt2->execute();
+
+            if ($stmt2->affected_rows === 1) {
+                echo json_encode(['status' => 'success', 'message' => 'Updated successfully']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Update failed']);
+            }
+            exit();
+        }
+    } else{
+        echo "<script>alert('Invalid ID'); window.location.href = 'admin_employees.php';</script>";
+        exit();
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,13 +56,17 @@
     min-height: 100vh;
 }
 
-.container {
+.dashboard-container {
     width: 60%;
     margin: 50px auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form > * {
+    margin-bottom: 10px;
 }
 
 h2 {
@@ -78,7 +82,6 @@ form {
 }
 
 form input[type="text"],
-form input[type="number"],
 form input[type="password"] {
     padding: 10px;
     margin: 10px 0;
@@ -131,12 +134,75 @@ label {
     <title>Document</title>
 </head>
 <body>
-<form action="" method="post">
-    Emp ID: <input type="text" name="empID" value="<?php echo $data['empID'] ?>"> <br>
-    Full Name: <input type="text" name="fullname" value="<?php echo $data['empName'] ?>"> <br>
-    Department: <input type="text" name="department" value="<?php echo $data['department'] ?>"> <br>
-    Salary: <input type="number" name="salary" value="<?php echo $data['salary'] ?>"> <br> <br>
-    <input type="submit" name="submit" value="Save Changes">
-</form>
+
+    <div class="dashboard-container">
+        <form action="" method="post" id="employeeForm">
+
+            <label for="fullname">Full name:</label>
+            <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($data['empName']); ?>">
+            <span><p id="name_error" style="color:red; display:none;"></p></span>
+
+            <label for="department">Department:</label>
+            <input type="text" name="department" id="department" value="<?php echo htmlspecialchars($data['department']); ?>">
+            <span><p id="dept_error" style="color:red; display:none;"></p></span>
+
+            <label for="salary">Salary:</label>
+            <input type="text" name="salary" id="salary" value="<?php echo htmlspecialchars($data['salary']); ?>">
+            <span><p id="salary_error" style="color:red; display:none;"></p></span>
+
+            <input type="submit" name="submit" value="Save Changes">
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('employeeForm');
+
+        form.addEventListener('submit', function(event){
+            //clear all errors on each submit attempt
+            document.getElementById('name_error').style.display = 'none';
+            document.getElementById('dept_error').style.display = 'none';
+            document.getElementById('salary_error').style.display = 'none';
+
+            let hasError = false;
+
+            const name = document.getElementById('fullname').value.trim();
+            const dept = document.getElementById('department').value.trim();
+            const salary = document.getElementById('salary').value.trim();
+
+            //validate full name
+            if(name === ''){
+                const nameError = document.getElementById('name_error');
+                nameError.style.display = 'block';
+                nameError.textContent = "Name cannot be blank";
+                hasError = true;
+            }
+
+            //validate department
+            if(dept === ''){
+                const deptError = document.getElementById('dept_error');
+                deptError.style.display = 'block';
+                deptError.textContent = "Department cannot be blank";
+                hasError = true;
+            }
+
+            //validate salary
+            if(salary === ''){
+                const salaryError = document.getElementById('salary_error');
+                salaryError.style.display = 'block';
+                salaryError.textContent = "Salary cannot be blank";
+                hasError = true;
+            } else  if (isNaN(salary) || Number(salary) <= 0) {
+                const salaryError = document.getElementById('salary_error');
+                salaryError.style.display = 'block';
+                salaryError.textContent = "Salary must be a positive number";
+                hasError = true;
+            }
+
+            
+        if (hasError) {
+            event.preventDefault(); // Stop form submission if errors exist
+        }
+        })
+    </script>
 </body>
 </html>

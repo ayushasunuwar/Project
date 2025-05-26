@@ -8,6 +8,7 @@
 
     if($conn->query($sql)){
         header("location: manageEmployee.php");
+        echo "<script>alert('Deleted successfully')</script>";
     }
     $conn->close();
 ?>

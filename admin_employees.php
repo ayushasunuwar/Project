@@ -172,33 +172,34 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php
-                    // Sample user data (Replace with actual database query)
-                    $users = [
-                        ['id' => 1, 'username' => 'JohnDoe', 'email' => 'john@example.com', 'role' => 'Admin'],
-                        ['id' => 2, 'username' => 'JaneSmith', 'email' => 'jane@example.com', 'role' => 'User'],
-                        ['id' => 3, 'username' => 'MikeRoss', 'email' => 'mike@example.com', 'role' => 'Admin'],
-                    ];
-
-                    // Counter for Serial Number
-                    $sn = 1;
-
-                    // Loop through employees and display them in table rows
-                    foreach ($users as $user) {
-                        echo "<tr>
-                                <td>{$sn}</td>
-                                <td>{$user['username']}</td>
-                                <td>{$user['email']}</td>
-                                <td>{$user['role']}</td>
-                                <td>
-                                    <a href='edit_users.php?id={$user['id']}' class='btn btn-warning'>Edit</a>
-                                    <a href='delete_users.php?id={$user['id']}' class='btn btn-danger' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>
-                                </td>
-                              </tr>";
-                        $sn++; // Increment Serial Number
+                <?php
+                    $conn = mysqli_connect('localhost', 'root', '', 'summerproject');
+                    $sql1 = "SELECT * FROM employees";
+                    $res = mysqli_query($conn, $sql1);
+                    $data = [];
+                    if(mysqli_num_rows($res) > 0){
+                        while($row = mysqli_fetch_assoc($res)){
+                            $data[] = $row;
+                        }
                     }
-                    ?>
+                ?>
+
+                <?php 
+                $i = 1;
+                foreach($data as $d){
+                ?>
+                <tbody>
+                    <tr>
+                        <td><?php echo $i++; ?></td>
+                        <td><?php echo $d['name']; ?></td>
+                        <td><?php echo $d['lastname']; ?></td>
+                        <td><?php echo $d['email']; ?></td>
+                        <td><a href="database_editform.php?id=<?php echo $d['id']; ?>">Edit</a>
+                        <a href="database_deleteform.php?id=<?php echo $d['id']; ?>" 
+                        onclick="return confirm('Are you sure to delete?')">Delete</a></td>
+                    </tr>
+
+              <?php  }?>
                 </tbody>
             </table>
         </div>

@@ -158,22 +158,27 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>S.N</th><th>Full Name</th><th>Department</th><th>Salary</th>
+                        <th>S.N</th>
+                        <th>Full Name</th>
+                        <th>Department</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
+                <?php
+                    include 'db_connection.php';
+                    $stmt = $conn->prepare("SELECT * FROM employees");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $i = 1;
+                ?>
+                   <?php foreach($data as $d){ ?>
                 <tbody>
-                    <?php
-                    // $sql = "SELECT * FROM employees";
-                    // $res = $conn->query($sql);
-                    // while ($row = $res->fetch_assoc()) {
-                    //     echo "<tr>
-                    //             <td>{$row['empID']}</td>
-                    //             <td>{$row['empName']}</td>
-                    //             <td>{$row['department']}</td>
-                    //             <td>{$row['salary']}</td>
-                    //           </tr>";
-                    // }
-                    ?>
+                        <tr><?php echo $i++; ?></tr>
+                        <tr><?php echo htmlspecialchars($d['name']); ?></tr>
+                        <tr><?php echo htmlspecialchars($d['department']); ?></tr>
+                        <tr><?php echo htmlspecialchars($d['email']); ?></tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
