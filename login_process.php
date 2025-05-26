@@ -6,11 +6,6 @@ if (isset($_POST['submit'])) {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
-    // CSRF Protection
-    // if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-    //     die("CSRF token validation failed");
-    // }
-
     if (!empty($email) && !empty($password)) {
         $stmt = $conn->prepare("SELECT user_id, password_hash, is_admin FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
@@ -22,7 +17,7 @@ if (isset($_POST['submit'])) {
                 $_SESSION['user_id'] = $row['user_id'];
 
                 if ($row['is_admin']=='1'){
-                     header("Location: emp_panel.php");
+                     header("Location: admin_panel.php");
                 exit();
                 } else{
                     header("Location: manager_panel.php");
