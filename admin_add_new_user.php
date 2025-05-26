@@ -1,5 +1,4 @@
 <?php
-// Include the navbar and sidebar
 include 'admin_nav.php';
 
 // If the form is submitted, handle the user creation
@@ -8,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $role = $_POST['role']; // Capture role data
+    $role = $_POST['role']; 
 
     // Hash the password before storing it
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
@@ -16,20 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Database connection (replace with your own credentials)
     $conn = new mysqli('localhost', 'username', 'password', 'database');
 
-    // Check for connection errors
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
     // SQL query to insert the user
     $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);  // "ssss" for string data types
 
     // Execute the query
     if ($stmt->execute()) {
-        echo "New user added successfully.";
+        "<script>alert('New user added successfully');</script>";
     } else {
-        echo "Error: " . $stmt->error;
+         "<script>alert('Error: ' . $stmt->error);</script>";
     }
 
     // Close the statement and connection
@@ -41,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- HTML Form to Add User -->
 <div class="content">
     <h2>Add New User</h2>
-    <form method="POST" action="">
+    <form method="POST" action="add_uer_process.php">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
