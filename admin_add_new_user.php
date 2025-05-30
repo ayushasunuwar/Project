@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- HTML Form to Add User -->
 <div class="content">
     <h2>Add New User</h2>
-    <form method="POST" action="add_uer_process.php">
+    <form method="POST" action="add_user_process.php" name="userForm" id="userForm">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
