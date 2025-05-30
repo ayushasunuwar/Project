@@ -123,113 +123,106 @@ include 'db_connection.php';
         .error-message {
     color: red;
     font-size: 12px;
-    margin-top: -10px; /* Adjust as needed */
-    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: px;
     text-align: left;
+    width: 100%;
 }
 
     </style>
 </head>
 <body>
-
-    <!-- Header Section -->
-    <div class="header">
+<div class="header">
         <?php include 'header.php'; ?>
     </div>
 
-    <!-- Login Form -->
     <div class="login-container">
         <h2>Login</h2>
         <p>Welcome back. Please enter your details.</p>
 
+        <?php
+        // Display server-side error messages if any
+        if (isset($_SESSION['error_message'])) {
+            echo '<p class="error-message" style="display: block;">' . htmlspecialchars($_SESSION['error_message']) . '</p>';
+            unset($_SESSION['error_message']); // Clear the message after displaying
+        }
+        ?>
+
         <form action="login_process.php" method="POST" name="loginForm" id="loginForm">
             <label for="email"><i class="fa-solid fa-envelope"></i></label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" >
-            <span><p class="error-message"  style="display:hidden;" id="emailError"></p></span>
+            <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email">
+            <p class="error-message" style="display: none;" id="emailError"></p>
 
             <label for="password"><i class="fa-solid fa-unlock"></i></label>
-            <!-- <input type="password" id="password" name="password" required placeholder="Enter your password"> -->
-                <div style="position: relative;">
-                    <input type="password" id="password" name="password" placeholder="Enter your password" >
-                    <i id="togglePassword" class="fa fa-eye" style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
-                    <span><p class="error-message"  style="display:hidden;" id="passwordError"></p></span>
-                </div>
-        <br>
+            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password">
+            <p class="error-message" style="display: none;" id="passwordError"></p>
+        
             <div class="forgot">
-               <p>Forgot password?  <a href="forgot_password.php">Click here</a></p>
+               <p>Forgot password? <a href="forgot_password.php">Click here</a></p>
             </div>
 
             <button type="submit" name="submit">Login</button>
         </form>
     </div>
 
-    <!-- Footer Section -->
     <div class="footer">
         <?php include 'footer.php'; ?>
     </div>
 
     <script>
-        //toggle password
-          const togglePassword = document.getElementById('togglePassword');
-          const passwordInput = document.getElementById('password');
+        // Client-side validation
+        const loginForm = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInputField = document.getElementById("password");
+        const emailError = document.getElementById("emailError");
+        const passwordError = document.getElementById("passwordError");
 
-        togglePassword.addEventListener('click', function () {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+        // Function to validate email format
+        function isValidEmail(email) {
+            // Corrected regex for email validation
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
 
-            // Toggle icon between eye and eye-slash
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-
-        //client side
-        const form = document.getElementById("loginForm");
-        
-
-        form.addEventListener('submit', function(event){
-             const emailI = document.getElementById("email").value.trim();
-             const passwordInput = document.getElementById("password").value.trim();
-             let email_error = document.getElementById("emailError");
-             let passowrd_error = document.getElementById("passwordError");
-
+        loginForm.addEventListener('submit', function(event){
             let valid = true;
 
-            //clear previous message
-            email_error.style.display = 'none';
+            // Clear previous error messages and styles
             emailError.textContent = '';
+            emailError.style.display = 'none';
             emailInput.style.borderColor = '#ddd';
 
-            passwordError.style.display = 'none';
             passwordError.textContent = '';
+            passwordError.style.display = 'none';
             passwordInputField.style.borderColor = '#ddd';
             
-            //validate email
-            if(email === ''){
+            // Validate email
+            if (emailInput.value.trim() === '') {
                 emailError.textContent = 'Email cannot be empty.';
                 emailError.style.display = 'block';
                 emailInput.style.borderColor = 'red';
                 valid = false;
-            }else if(!isValidEmail(email)){
+            } else if (!isValidEmail(emailInput.value.trim())) {
                 emailError.textContent = 'Please enter a valid email address.';
-                emailError.style.display = 'block';
+                emailError.style.display = 'inline-block';
                 emailInput.style.borderColor = 'red';
                 valid = false;
             }
 
-            //validate password
-            if (password === ''){
+            // Validate password
+            if (passwordInputField.value.trim() === '') {
                 passwordError.textContent = 'Password cannot be empty.';
-                passwordError.style.display = 'block';
+                passwordError.style.display = 'inline-block';
                 passwordInputField.style.borderColor = 'red';
                 valid = false;
             }
 
-            if(!valid){
-                event.preventDefault(); // stop form submission id validation fails
+            if (!valid) {
+                event.preventDefault(); // Stop form submission if validation fails
             }
         });
-
     </script>
+
 
 </body>
 </html>
