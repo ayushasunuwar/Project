@@ -112,16 +112,6 @@ label {
     margin-bottom: 5px;
 }
 
-.error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 10px;
-    margin-bottom: px;
-    text-align: left;
-    width: 100%;
-}
-
-
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .container {
@@ -146,82 +136,26 @@ label {
 <body>
 
     <div class="dashboard-container">
-        <form action="edit_emp_process.php" method="post" id="employeeForm">
+        <form action="" method="post" id="userForm">
 
             <label for="fullname">Full name:</label>
             <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($data['empName']); ?>">
-            <p class="error-message" id="name_error" style="color:red; display:none;"></p>
+            <span><p id="name_error" style="color:red; display:none;"></p></span>
 
             <label for="department">Department:</label>
             <input type="text" name="department" id="department" value="<?php echo htmlspecialchars($data['department']); ?>">
-            <p class="error-message" id="dept_error" style="color:red; display:none;"></p>
+            <span><p id="dept_error" style="color:red; display:none;"></p></span>
 
             <label for="salary">Salary:</label>
             <input type="text" name="salary" id="salary" value="<?php echo htmlspecialchars($data['salary']); ?>">
-            <p class="error-message" id="salary_error" style="color:red; display:none;"></p>
+            <span><p id="salary_error" style="color:red; display:none;"></p></span>
 
             <input type="submit" name="submit" value="Save Changes">
         </form>
     </div>
 
     <script>
-        const form = document.getElementById('employeeForm');
 
-        form.addEventListener('submit', function(event){
-            //clear all errors on each submit attempt
-
-            let nameError = document.getElementById('name_error');
-            let deptError = document.getElementById('dept_error');
-            let salaryError = document.getElementById('salary_error');
-             
-            nameError.textContent = '';
-            nameError.style.display = 'none';
-            fullnameInput.style.borderColor = '#ddd';
-
-            deptError.textContent = '';
-            deptError.style.display = 'none';
-            fullnameInput.style.borderColor = '#ddd';
-
-            salaryError.textContent = '';
-            salaryError.style.display = 'none';
-            fullnameInput.style.borderColor = '#ddd';
-
-            let hasError = false;
-
-            const name = document.getElementById('fullname').value.trim();
-            const dept = document.getElementById('department').value.trim();
-            const salary = document.getElementById('salary').value.trim();
-
-            //validate full name
-            if(name === ''){
-                nameError.style.display = 'block';
-                nameError.textContent = "Name cannot be blank";
-                hasError = true;
-            }
-
-            //validate department
-            if(dept === ''){
-                deptError.style.display = 'inline-block';
-                deptError.textContent = "Department cannot be blank";
-                hasError = true;
-            }
-
-            //validate salary
-            if(salary === ''){
-                salaryError.style.display = 'inline-block';
-                salaryError.textContent = "Salary cannot be blank";
-                hasError = true;
-            } else  if (isNaN(salary) || Number(salary) <= 0) {
-                salaryError.style.display = 'inline-block';
-                salaryError.textContent = "Salary must be a positive number";
-                hasError = true;
-            }
-
-            
-        if (hasError) {
-            event.preventDefault(); // Stop form submission if errors exist
-        }
-        })
     </script>
 </body>
 </html>

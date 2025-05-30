@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <label for="role">Role:</label>
             <select name="role" id="role" required>
                 <option value="admin">Admin</option>
-                <option value="user">User</option>
+                <option value="user">Manager</option>
             </select>
         </div>
         <button type="submit">Add User</button>
@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         margin-top: 100px;
         margin-left: 250px; /* Adjust for sidebar width */
         padding: 20px;
+        width: 500px;
     }
 
     .form-group {

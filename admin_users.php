@@ -194,8 +194,8 @@
                         <td><?php echo $i++; ?></td>
                         <td><?php echo $d['name']; ?></td>
                         <td><?php echo $d['email']; ?></td>
-                        <td><a href="database_editform.php?id=<?php echo $d['id']; ?>">Edit</a>
-                        <a href="database_deleteform.php?id=<?php echo $d['id']; ?>" 
+                        <td><a href="edit_users.php?id=<?php echo $d['id']; ?>">Edit</a>
+                        <a href="delete_user.php?id=<?php echo $d['id']; ?>" 
                         onclick="return confirm('Are you sure to delete?')">Delete</a></td>
                     </tr>
 

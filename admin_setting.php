@@ -187,16 +187,6 @@ if (isset($_SESSION['admin_id'])) {
                     <div id="passwordMatchError" class="error-message"></div>
                 </div>
 
-                <!-- Notification Settings -->
-                <h4>Notification Settings</h4>
-                <div class="form-group">
-                    <label for="notifications">Enable Notifications</label>
-                    <select class="form-control" id="notifications" name="notifications">
-                        <option value="1" selected>Enabled</option>
-                        <option value="0">Disabled</option>
-                    </select>
-                </div>
-
                 <!-- Save Button -->
                 <button type="submit" class="btn-save" id="submitButton">Save Changes</button>
             </form>
