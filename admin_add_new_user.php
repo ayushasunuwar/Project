@@ -1,66 +1,14 @@
 <?php
 include 'admin_nav.php';
-
-// If the form is submitted, handle the user creation
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Capture form data
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $role = $_POST['role']; 
-
-    // Hash the password before storing it
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Database connection (replace with your own credentials)
-    $conn = new mysqli('localhost', 'username', 'password', 'summerproject');
-
-    // SQL query to insert the user
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $username, $email, $hashed_password, $role);  // "ssss" for string data types
-
-    // Execute the query
-    if ($stmt->execute()) {
-        "<script>alert('New user added successfully');</script>";
-    } else {
-         "<script>alert('Error: ' . $stmt->error);</script>";
-    }
-
-    // Close the statement and connection
-    $stmt->close();
-    $conn->close();
-}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-<!-- HTML Form to Add User -->
-<div class="content">
-    <h2>Add New User</h2>
-    <form method="POST" action="add_user_process.php" name="userForm" id="userForm">
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
-        </div>
-        <div class="form-group">
-            <label for="role">Role:</label>
-            <select name="role" id="role" required>
-                <option value="admin">Admin</option>
-                <option value="user">Manager</option>
-            </select>
-        </div>
-        <button type="submit">Add User</button>
-    </form>
-</div>
-
-<!-- You can also include your CSS here or in an external file -->
-<style>
+    <style>
     .content {
         margin-top: 100px;
         margin-left: 250px; /* Adjust for sidebar width */
@@ -93,3 +41,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         background-color: #0056b3;
     }
 </style>
+
+</head>
+<body>
+    <!-- HTML Form to Add User -->
+<div class="dashbord-container">
+    <h2>Add New User</h2>
+    <form method="POST" action="add_user_process.php" name="userForm" id="userForm">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select name="role" id="role" required>
+                <option value="admin">Admin</option>
+                <option value="user">Manager</option>
+            </select>
+        </div>
+        <button type="submit">Add User</button>
+    </form>
+</div>
+</body>
+
+<script>
+    const form = document.getElementById("userForm");
+
+    form.addEventListener('submit', function(event){
+        const username = document.getElementById("username").value.trim();
+    })
+</script>
+</html>
