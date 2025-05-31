@@ -1,16 +1,6 @@
 <?php
 session_start();
 
-// Security headers
-header("X-Frame-Options: DENY");
-header("X-Content-Type-Options: nosniff");
-header("X-XSS-Protection: 1; mode=block");
-
-// Generate CSRF token if not exists
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
 $title = 'Settings';
 $page = 'settings';
 include_once 'db_connection.php';

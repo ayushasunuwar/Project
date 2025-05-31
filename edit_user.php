@@ -2,47 +2,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <?php
+    include 'admin_nav.php';
     include 'db_connection.php';
-
-    if(isset($_GET['id'])){
-        $id = intval($_GET['id']);
-   
-        // Fetch employee data securely
-        $sql = "SELECT * FROM employee WHERE empID = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $data = $res->fetch_assoc();
-
-        if (!$data) {
-            echo "<script>alert('Employee not found'); window.location.href = 'admin_employees.php';</script>";
-            exit();
-        }
-
-        if(isset($_POST["submit"])){
-            $fullName = trim($_POST['fullname']);
-            $dept = trim($_POST['department']);
-            $salary = intval($_POST['salary']);
-        
-            // Secure update query using prepared statements
-            $sql2 = "UPDATE employee SET empName = ?, department = ?, salary = ? WHERE empID = ?";
-            $stmt2 = $conn->prepare($sql2);
-            $stmt2->bind_param("sssi", $fullName, $dept, $salary, $id);
-            $stmt2->execute();
-
-            if ($stmt2->affected_rows === 1) {
-                echo json_encode(['status' => 'success', 'message' => 'Updated successfully']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Update failed']);
-            }
-            exit();
-        }
-    } else{
-        echo "<script>alert('Invalid ID'); window.location.href = 'admin_employees.php';</script>";
-        exit();
-    }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,7 +97,7 @@ label {
 <body>
 
     <div class="dashboard-container">
-        <form action="" method="post" id="userForm">
+        <form action="edit_user_process.php" method="post" id="userForm">
 
             <label for="fullname">Full name:</label>
             <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($data['empName']); ?>">

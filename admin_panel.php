@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+    session_start(); 
+    include 'db_connection.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -135,20 +138,34 @@
 <body>
 <div class="dashboard-container">
     <div class="content">
-        <?php include 'admin_nav.php'; ?>
+        <?php 
+            include 'admin_nav.php'; 
+
+            $stmt = $conn->prepare("SELECT COUNT(*) AS count FROM employees");
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $total_emp = $row['count'];
+
+            $stmt2 = $conn->prepare("SELECT COUNT(*) AS count2 FROM users");
+            $stmt2->execute();
+            $result2 = $stmt2->get_result();
+            $row2 = $result2->fetch_assoc();
+            $total_user = $row2['count2'];
+        ?>
 
         <div class="dashboard-row">
             <div class="col-md-4">
                 <div class="card bg-primary text-white">
                     <h5>Total Employees</h5>
-                    <p><?php echo 'hello'; ?></p>
+                    <p><?php echo $total_emp; ?></p>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="card bg-success text-white">
-                    <h5>Active Employees</h5>
-                    <p><?php echo 'hello'; ?></p>
+                    <h5>Total Users</h5>
+                    <p><?php echo $total_user; ?></p>
                 </div>
             </div>
         </div>
@@ -165,19 +182,21 @@
                     </tr>
                 </thead>
                 <?php
-                    include 'db_connection.php';
-                    $stmt = $conn->prepare("SELECT * FROM employees");
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $data = $result->fetch_all(MYSQLI_ASSOC);
+                    $stmt3 = $conn->prepare("SELECT * FROM employees");
+                    $stmt3->execute();
+                    $result3 = $stmt3->get_result();
+                    $data = $result3->fetch_all(MYSQLI_ASSOC);
                     $i = 1;
                 ?>
-                   <?php foreach($data as $d){ ?>
+            
                 <tbody>
-                        <tr><?php echo $i++; ?></tr>
-                        <tr><?php echo htmlspecialchars($d['name']); ?></tr>
-                        <tr><?php echo htmlspecialchars($d['department']); ?></tr>
-                        <tr><?php echo htmlspecialchars($d['email']); ?></tr>
+                    <?php foreach($data as $d){ ?>
+                        <tr>
+                            <td><?php echo $i++; ?></td>
+                            <td><?php echo htmlspecialchars($d['name']); ?></td>
+                            <td><?php echo htmlspecialchars($d['department']); ?></td>
+                            <td><?php echo htmlspecialchars($d['email']); ?></td>
+                        </tr>
                     <?php } ?>
                 </tbody>
             </table>

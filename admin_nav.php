@@ -213,7 +213,7 @@
         <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
         <input type="text" placeholder="Search...">
     </div>
-    <div class="profile" onclick="window.location.href='edit_profile.php'">
+    <div class="profile" onclick="window.location.href='admin_setting.php'">
         <img src="images/p3.jpg" alt="Profile Picture">
     </div>
 </nav>

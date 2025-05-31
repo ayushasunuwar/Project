@@ -83,14 +83,6 @@
             <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <!-- Check if we're on the forgot password page -->
-            <?php if(basename($_SERVER['PHP_SELF']) !== 'forgot_password.php'): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="forgot_password.php">Forgot Password</a>
-                </li>
-            <?php endif; ?>
-        </ul>
     </div>
     </nav>
     </header>

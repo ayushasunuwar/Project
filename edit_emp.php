@@ -2,140 +2,101 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <?php
+    include 'admin_nav.php';
     include 'db_connection.php';
-
-    if(isset($_GET['id'])){
-        $id = intval($_GET['id']);
-   
-        // Fetch employee data securely
-        $sql = "SELECT * FROM employee WHERE empID = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $data = $res->fetch_assoc();
-
-        if (!$data) {
-            echo "<script>alert('Employee not found'); window.location.href = 'admin_employees.php';</script>";
-            exit();
-        }
-
-        if(isset($_POST["submit"])){
-            $fullName = trim($_POST['fullname']);
-            $dept = trim($_POST['department']);
-            $salary = intval($_POST['salary']);
-        
-            // Secure update query using prepared statements
-            $sql2 = "UPDATE employee SET empName = ?, department = ?, salary = ? WHERE empID = ?";
-            $stmt2 = $conn->prepare($sql2);
-            $stmt2->bind_param("sssi", $fullName, $dept, $salary, $id);
-            $stmt2->execute();
-
-            if ($stmt2->affected_rows === 1) {
-                echo json_encode(['status' => 'success', 'message' => 'Updated successfully']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Update failed']);
-            }
-            exit();
-        }
-    } else{
-        echo "<script>alert('Invalid ID'); window.location.href = 'admin_employees.php';</script>";
-        exit();
-    }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    min-height: 100vh;
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+        }
 
-.dashboard-container {
-    width: 60%;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .dashboard-container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-form > * {
-    margin-bottom: 10px;
-}
+        form > * {
+            margin-bottom: 10px;
+        }
 
-h2 {
-    text-align: center;
-    color: #007bff;
-    margin-bottom: 20px;
-}
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
 
-/* Form Styles */
-form {
-    display: flex;
-    flex-direction: column;
-}
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-form input[type="text"],
-form input[type="password"] {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
+        form input[type="text"],
+        form input[type="password"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-form input[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-}
+        form input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-form input[type="submit"]:hover {
-    background-color: #0056b3;
-}
+        form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
 
-/* Styling for Labels */
-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
+        /* Styling for Labels */
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
 
-.error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 10px;
-    margin-bottom: px;
-    text-align: left;
-    width: 100%;
-}
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 10px;
+            margin-bottom: px;
+            text-align: left;
+            width: 100%;
+        }
 
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .container {
-        width: 90%;
-    }
-    
-    form {
-        padding: 10px;
-    }
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            
+            form {
+                padding: 10px;
+            }
 
-    h2 {
-        font-size: 24px;
-    }
-}
+            h2 {
+                font-size: 24px;
+            }
+        }
 
 
     </style>
@@ -144,21 +105,29 @@ label {
     <title>Document</title>
 </head>
 <body>
-
+<?php
+    $id = $_GET["id"];
+?>
     <div class="dashboard-container">
         <form action="edit_emp_process.php" method="post" id="employeeForm">
 
             <label for="fullname">Full name:</label>
-            <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($data['empName']); ?>">
+            <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($_GET['empName']); ?>">
             <p class="error-message" id="name_error" style="color:red; display:none;"></p>
 
             <label for="department">Department:</label>
-            <input type="text" name="department" id="department" value="<?php echo htmlspecialchars($data['department']); ?>">
+            <input type="text" name="department" id="department" value="<?php echo htmlspecialchars($_GET['department']); ?>">
             <p class="error-message" id="dept_error" style="color:red; display:none;"></p>
 
             <label for="salary">Salary:</label>
-            <input type="text" name="salary" id="salary" value="<?php echo htmlspecialchars($data['salary']); ?>">
+            <input type="text" name="salary" id="salary" value="<?php echo htmlspecialchars($_GET['salary']); ?>">
             <p class="error-message" id="salary_error" style="color:red; display:none;"></p>
+
+            <label for="role">Role:</label>
+            <select name="role" id="role" value="<?php echo htmlspecialchars($_GET['role']) ?>">
+                <option value="admin">Admin</option>
+                <option value="user">Manager</option>
+            </select>
 
             <input type="submit" name="submit" value="Save Changes">
         </form>
@@ -223,5 +192,6 @@ label {
         }
         })
     </script>
+
 </body>
 </html>
