@@ -130,6 +130,10 @@
             transform: translateY(-2px);
         }
 
+        a{
+            text-decoration: none;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .content {
@@ -175,6 +179,8 @@
                         <th>S.N</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Phone</th>
+                        <th>Department</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -191,10 +197,10 @@
                 <tbody>
                     <tr>
                         <td><?php echo $i++; ?></td>
-                        <td><?php echo $d['name']; ?></td>
-                        <td><?php echo $d['phone']; ?></td>
-                        <td><?php echo $d['department']; ?></td>
+                        <td><?php echo $d['fullName']; ?></td>
                         <td><?php echo $d['email']; ?></td>
+                        <td><?php echo $d['phone']; ?></td>
+                        <td><?php echo $d['deptName']; ?></td>
                         <td><a href="edit_emp.php?id=<?php echo $d['id']; ?>">Edit</a>
                         <a href="delete_emp.php?id=<?php echo $d['id']; ?>" 
                         onclick="return confirm('Are you sure to delete?')">Delete</a></td>

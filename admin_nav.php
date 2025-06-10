@@ -224,6 +224,7 @@
     <a href="admin_panel.php">Dashboard</a>
     <a href="user_admin.php">Users</a>
     <a href="emp_admin.php">Employees</a>
+    <a href="payment.php">Payment</a>
     <a href="admin_setting.php">Settings</a>
     <a href="logout.php" class="logout">Logout</a>
 </aside>

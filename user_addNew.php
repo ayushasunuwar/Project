@@ -45,6 +45,13 @@ include 'admin_nav.php';
     button:hover {
         background-color: #0056b3;
     }
+
+    .Error-class {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
 </style>
 
 </head>
@@ -53,91 +60,114 @@ include 'admin_nav.php';
 <div class="dashbord-container">
     <h2>Add New User</h2>
     <form method="POST" action="user_add_process.php" name="userForm" id="userForm">
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" >
             <p id="usernameError" class="Error-class" style="display: none;"></p>
-        </div>
+        </div> -->
+
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" >
             <p id="emailError" class="Error-class" style="display: none;"></p>
         </div>
+
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" >
             <p id="passwordError" class="Error-class" style="display: none;"></p>
         </div>
+
         <div class="form-group">
             <label for="role">Role:</label>
             <select name="role" id="role" >
+                <option value="">Select a role</option>
                 <option value="admin">Admin</option>
                 <option value="user">Manager</option>
             </select>
             <p id="roleError" class="Error-class" style="display: none;"></p>
         </div>
-        <button type="submit">Add User</button>
+        <button type="submit" name="submit" id="submit">Add User</button>
     </form>
 </div>
 </body>
 
 <script>
-    const form = document.getElementById('employeeForm');
+    // Client-side validation
+    const form = document.getElementById("userForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const roleInput = document.getElementById("role");
 
-        form.addEventListener('submit', function(event){
-            //clear all errors on each submit attempt
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const roleError = document.getElementById("roleError");
 
-            let nameError = document.getElementById('name_error');
-            let deptError = document.getElementById('dept_error');
-            let salaryError = document.getElementById('salary_error');
-             
-            nameError.textContent = '';
-            nameError.style.display = 'none';
-            fullnameInput.style.borderColor = '#ddd';
+    // Function to validate email format
+    function isValidEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    }
 
-            deptError.textContent = '';
-            deptError.style.display = 'none';
-            fullnameInput.style.borderColor = '#ddd';
+    form.addEventListener("submit", function (event) {
+        let valid = true;
 
-            salaryError.textContent = '';
-            salaryError.style.display = 'none';
-            fullnameInput.style.borderColor = '#ddd';
+        // Reset errors
+        emailError.textContent = "";
+        emailError.style.display = "none";
+        emailInput.style.borderColor = "#ddd";
 
-            let hasError = false;
+        passwordError.textContent = "";
+        passwordError.style.display = "none";
+        passwordInput.style.borderColor = "#ddd";
 
-            const name = document.getElementById('fullname').value.trim();
-            const dept = document.getElementById('department').value.trim();
-            const salary = document.getElementById('salary').value.trim();
+        roleError.textContent = "";
+        roleError.style.display = "none";
+        roleInput.style.borderColor = "#ddd";
 
-            //validate full name
-            if(name === ''){
-                nameError.style.display = 'block';
-                nameError.textContent = "Name cannot be blank";
-                hasError = true;
-            }
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        const role = roleInput.value.trim();
 
-            //validate department
-            if(dept === ''){
-                deptError.style.display = 'inline-block';
-                deptError.textContent = "Department cannot be blank";
-                hasError = true;
-            }
-
-            //validate salary
-            if(salary === ''){
-                salaryError.style.display = 'inline-block';
-                salaryError.textContent = "Salary cannot be blank";
-                hasError = true;
-            } else  if (isNaN(salary) || Number(salary) <= 0) {
-                salaryError.style.display = 'inline-block';
-                salaryError.textContent = "Salary must be a positive number";
-                hasError = true;
-            }
-
-            
-        if (hasError) {
-            event.preventDefault(); // Stop form submission if errors exist
+        // Email Validation
+        if (email === "") {
+            emailError.textContent = "Email cannot be empty.";
+            emailError.style.display = "block";
+            emailInput.style.borderColor = "red";
+            valid = false;
+        } else if (!isValidEmail(email)) {
+            emailError.textContent = "Please enter a valid email address.";
+            emailError.style.display = "block";
+            emailInput.style.borderColor = "red";
+            valid = false;
         }
-        });
+
+        // Password Validation
+        if (password === "") {
+            passwordError.textContent = "Password cannot be empty.";
+            passwordError.style.display = "block";
+            passwordInput.style.borderColor = "red";
+            valid = false;
+        } else if (password.length < 6) {
+            passwordError.textContent = "Password must be at least 6 characters long!";
+            passwordError.style.display = "block";
+            passwordInput.style.borderColor = "red";
+            valid = false;
+        }
+
+        // Role Validation
+        if (role === "") {
+            roleError.textContent = "Please select a role.";
+            roleError.style.display = "block";
+            roleInput.style.borderColor = "red";
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+
+
 </script>
 </html>

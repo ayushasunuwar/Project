@@ -1,3 +1,12 @@
+<?php
+    include 'db_connection.php';
+    session_start();
+    // if(!isset($_SESSION['user_id'])){
+    //     header('location: login.php');
+    //     exit();
+    // }
+?>
+
 <link rel="stylesheet" href="css/all.min.css">
 <link rel="stylesheet" href="css/fontawesome.min.css">
 
@@ -42,17 +51,10 @@
 
     <script defer src="./js/bootstrap.bundle.min.js"></script>
 
-    <title>User</title>
+    <title>Manager</title>
     
 </head>
-<?php
-    include 'db_connection.php';
-    session_start();
-    if(!isset($_SESSION['user_id'])){
-        header('location: login.php');
-        exit();
-    }
-?>
+
 <body>
 
 </body>

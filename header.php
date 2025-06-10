@@ -80,8 +80,6 @@
         <nav class="navbar">
         <div class="logo"><a href="login.php"><span style="color:rgb(184, 0, 0);">Record Keeping</span><span style="color:#0057b8;">System</span></a></div>
 
-            <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
-
             <div class="collapse navbar-collapse" id="navbarNav">
     </div>
     </nav>
