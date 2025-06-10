@@ -181,23 +181,33 @@
                         <th>Email</th>
                     </tr>
                 </thead>
-                <?php
-                    $stmt3 = $conn->prepare("SELECT * FROM employees");
-                    $stmt3->execute();
-                    $result3 = $stmt3->get_result();
-                    $data = $result3->fetch_all(MYSQLI_ASSOC);
-                    $i = 1;
-                ?>
             
-                <tbody>
-                    <?php foreach($data as $d){ ?>
-                        <tr>
-                            <td><?php echo $i++; ?></td>
-                            <td><?php echo htmlspecialchars($d['name']); ?></td>
-                            <td><?php echo htmlspecialchars($d['department']); ?></td>
-                            <td><?php echo htmlspecialchars($d['email']); ?></td>
-                        </tr>
-                    <?php } ?>
+              <tbody>
+                    <?php
+                    // Query to fetch employee data along with department name
+                    // Joining employees table with departments table on DeptID
+                    $stmt3 = $conn->prepare("SELECT e.FullName, d.DeptName, e.Email FROM employees e JOIN Departments d ON e.DeptID = d.DeptID");
+                    if ($stmt3) {
+                        $stmt3->execute();
+                        $data = $stmt3->get_result();
+                        $i = 1;
+                        // Loop through the results and display them in the table
+                        foreach($data as $d){
+                            ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($i++); ?></td>
+                                <td><?php echo htmlspecialchars($d['FullName']); ?></td>
+                                <td><?php echo htmlspecialchars($d['DeptName']); ?></td>
+                                <td><?php echo htmlspecialchars($d['Email']); ?></td>
+                            </tr>
+                            <?php
+                        }
+                        $stmt3->close(); // Close the statement
+                    } else {
+                        echo "<tr><td colspan='4'>Error fetching employee data.</td></tr>";
+                        error_log("Error preparing statement for employee list: " . $conn->error);
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

@@ -184,29 +184,40 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <?php
-                    $stmt = $conn->prepare("SELECT * FROM employees");
-                    $stmt->execute();
-                    $data = $stmt->get_result();
-                ?>
-
-                <?php 
-                $i = 1;
-                foreach($data as $d){
-                ?>
+                
                 <tbody>
-                    <tr>
-                        <td><?php echo $i++; ?></td>
-                        <td><?php echo $d['fullName']; ?></td>
-                        <td><?php echo $d['email']; ?></td>
-                        <td><?php echo $d['phone']; ?></td>
-                        <td><?php echo $d['deptName']; ?></td>
-                        <td><a href="edit_emp.php?id=<?php echo $d['id']; ?>">Edit</a>
-                        <a href="delete_emp.php?id=<?php echo $d['id']; ?>" 
-                        onclick="return confirm('Are you sure to delete?')">Delete</a></td>
-                    </tr>
-
-              <?php  }?>
+                    <?php
+                    // Query to fetch employee data along with department name and EmployeeID for actions
+                    // Joining employees table with departments table on DeptID
+                    $stmt = $conn->prepare("SELECT e.EmployeeID, e.FullName, e.Email, e.Phone, d.DeptName FROM employees e JOIN Departments d ON e.DeptID = d.DeptID");
+                    if ($stmt) {
+                        $stmt->execute();
+                        $data = $stmt->get_result();
+                        $i = 1;
+                        // Loop through the results and display them in the table
+                        foreach($data as $d){
+                            ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($i++); ?></td>
+                                <td><?php echo htmlspecialchars($d['FullName']); ?></td>
+                                <td><?php echo htmlspecialchars($d['Email']); ?></td>
+                                <td><?php echo htmlspecialchars($d['Phone']); ?></td>
+                                <td><?php echo htmlspecialchars($d['DeptName']); ?></td>
+                                <td>
+                                    <a href="edit_emp.php?id=<?php echo htmlspecialchars($d['EmployeeID']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="delete_emp.php?id=<?php echo htmlspecialchars($d['EmployeeID']); ?>"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Are you sure you want to delete this employee?');">Delete</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                        $stmt->close(); // Close the statement
+                    } else {
+                        echo "<tr><td colspan='6'>Error fetching employee data.</td></tr>";
+                        error_log("Error preparing statement for employee list: " . $conn->error);
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
