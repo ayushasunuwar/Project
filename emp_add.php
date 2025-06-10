@@ -10,6 +10,10 @@ include 'admin_nav.php';
     <title>Document</title>
 
     <style>
+        .dashbord-container{
+    width: 500px;
+    margin: 100px auto 50px auto;
+}
     .content {
         margin-top: 100px;
         margin-left: 250px; /* Adjust for sidebar width */
@@ -51,7 +55,7 @@ include 'admin_nav.php';
     <form method="POST" action="add_emp_process.php" name="empForm" id="empForm">
         <div class="form-group">
             <label for="fullname">Fullname:</label>
-            <input type="text" name="username" id="username" required>
+            <input type="text" name="fullname" id="usefullname" required>
         </div>
         <div class="form-group">
             <label for="department">Department:</label>

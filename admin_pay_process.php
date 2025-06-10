@@ -1,7 +1,6 @@
 <?php
-// Replace with your real credentials
 $khalti_secret_key = 'YOUR_KHALTI_SECRET_KEY';
-$api_url = 'https://khalti.com/api/v2/epayment/initiate/'; // Or actual payout URL provided by Khalti
+$api_url = ''; 
 
 $data = [
     'amount' => $_POST['amount'] * 100, // Convert to paisa

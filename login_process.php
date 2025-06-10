@@ -7,16 +7,15 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
 
     if (!empty($email) && !empty($password)) {
-        $stmt = $conn->prepare("SELECT user_id, password_hash, is_admin FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT userId, passwordHash, userRole FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-        if ($row = $result->fetch_assoc()) {
-            if (password_verify($password, $row['password_hash'])) {
-                $_SESSION['user_id'] = $row['user_id'];
+            if ($password == $row['passwordHash']) {
 
-                if ($row['is_admin']=='1'){
+                if ($row['userRole']=='Admin'){
                      header("Location: admin_panel.php");
                 exit();
                 } else{
@@ -36,5 +35,5 @@ if (isset($_POST['submit'])) {
 
     header("Location: login.php");
     exit();
-}
+
 ?>

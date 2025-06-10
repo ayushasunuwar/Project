@@ -9,6 +9,11 @@ include 'admin_nav.php';
     <title>Document</title>
 
     <style>
+.dashbord-container{
+    width: 500px;
+    margin: 100px auto 50px auto;
+}
+
     .content {
         margin-top: 100px;
         margin-left: 250px; /* Adjust for sidebar width */
@@ -47,7 +52,7 @@ include 'admin_nav.php';
     <!-- HTML Form to Add User -->
 <div class="dashbord-container">
     <h2>Add New User</h2>
-    <form method="POST" action="add_user_process.php" name="userForm" id="userForm">
+    <form method="POST" action="user_add_process.php" name="userForm" id="userForm">
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" >

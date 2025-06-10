@@ -94,21 +94,26 @@ label {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+    <?php
+        $stmt = $conn->prepare("SELECT * FROM users")
+    ?>
 
     <div class="dashboard-container">
+        <p class="Error-message" id="edit-error" style="display:none;">There was an error.</p>
         <form action="edit_user_process.php" method="post" id="userForm">
 
-            <label for="fullname">Full name:</label>
-            <input type="text" name="fullname" id="fullname" value="<?php echo htmlspecialchars($data['empName']); ?>">
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email" value="<?php echo htmlspecialchars($data['email']); ?>">
             <span><p id="name_error" style="color:red; display:none;"></p></span>
 
-            <label for="department">Department:</label>
-            <input type="text" name="department" id="department" value="<?php echo htmlspecialchars($data['department']); ?>">
+            <label for="department">Password:</label>
+            <input type="text" name="password" id="pwd" value="<?php echo htmlspecialchars($data['passwordHash']); ?>">
             <span><p id="dept_error" style="color:red; display:none;"></p></span>
 
-            <label for="salary">Salary:</label>
-            <input type="text" name="salary" id="salary" value="<?php echo htmlspecialchars($data['salary']); ?>">
+            <label for="salary">Role:</label>
+            <input type="text" name="salary" id="salary" value="<?php echo htmlspecialchars($data['useerRole']); ?>">
             <span><p id="salary_error" style="color:red; display:none;"></p></span>
 
             <input type="submit" name="submit" value="Save Changes">
@@ -116,7 +121,10 @@ label {
     </div>
 
     <script>
-
+        const editError = docoument.getElementById("edit-errror");
+        if(isset($_SERVER['error_message'])){
+            editError.style.display = "inline-block";
+        }
     </script>
 </body>
 </html>

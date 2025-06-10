@@ -34,11 +34,6 @@ if (isset($_SESSION['admin_id'])) {
             padding: 0;
         }
 
-        .dashboard-container {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
         .content {
             margin-top: 120px;
             margin-left: 260px;
@@ -47,10 +42,11 @@ if (isset($_SESSION['admin_id'])) {
             transition: width 0.3s ease, margin-left 0.3s ease;
         }
 
-        h3 {
+        h4 {
             margin-bottom: 30px;
             font-size: 1.8rem;
             color: #333;
+            text-align: center;
         }
 
         .settings-form {
@@ -58,6 +54,9 @@ if (isset($_SESSION['admin_id'])) {
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 700px;
+            margin: 0 auto;              /* Center horizontally */
+    margin-top: 40px;  
         }
 
         .form-group {
@@ -131,10 +130,8 @@ if (isset($_SESSION['admin_id'])) {
     <?php include 'admin_nav.php'; ?>
     
     <div class="content">
-        <h3>Settings</h3>
         <div class="settings-form">
             <form action="settings_process.php" method="post" id="settingsForm">
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
                 
                 <!-- Edit Profile Section -->
                 <h4>Edit Profile</h4>
@@ -148,13 +145,6 @@ if (isset($_SESSION['admin_id'])) {
                     <label for="adminEmail">Admin Email</label>
                     <input type="email" id="adminEmail" class="form-control" name="adminEmail" 
                            value="<?php echo htmlspecialchars($adminData['email'] ?? 'admin@example.com'); ?>" required>
-                </div>
-
-                <!-- Current Password -->
-                <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <input type="password" id="currentPassword" class="form-control" 
-                           name="currentPassword" placeholder="Enter current password" required>
                 </div>
 
                 <!-- New Password -->

@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    include 'db_connection.php';
+    include 'admin_nav.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,10 +164,9 @@
 <body>
 <div class="dashboard-container">
     <div class="content">
-        <?php include 'admin_nav.php'; ?>
 
         <h3>Manage Employees</h3>
-        <a href="admin_add_emp.php" class="add-user-btn">+ Add New Employee</a>
+        <a href="emp_add.php" class="add-user-btn">+ Add New Employee</a>
         
         <div class="table-container">
             <table class="table table-hover">
@@ -173,15 +179,9 @@
                     </tr>
                 </thead>
                 <?php
-                    $conn = mysqli_connect('localhost', 'root', '', 'summerproject');
-                    $sql1 = "SELECT * FROM employees";
-                    $res = mysqli_query($conn, $sql1);
-                    $data = [];
-                    if(mysqli_num_rows($res) > 0){
-                        while($row = mysqli_fetch_assoc($res)){
-                            $data[] = $row;
-                        }
-                    }
+                    $stmt = $conn->prepare("SELECT * FROM employees");
+                    $stmt->execute();
+                    $data = $stmt->get_result();
                 ?>
 
                 <?php 
@@ -192,7 +192,8 @@
                     <tr>
                         <td><?php echo $i++; ?></td>
                         <td><?php echo $d['name']; ?></td>
-                        <td><?php echo $d['lastname']; ?></td>
+                        <td><?php echo $d['phone']; ?></td>
+                        <td><?php echo $d['department']; ?></td>
                         <td><?php echo $d['email']; ?></td>
                         <td><a href="edit_emp.php?id=<?php echo $d['id']; ?>">Edit</a>
                         <a href="delete_emp.php?id=<?php echo $d['id']; ?>" 

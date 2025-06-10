@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    include 'admin_nav.php';
+    include 'db_connection.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,45 +163,35 @@
 <body>
 <div class="dashboard-container">
     <div class="content">
-        <?php include 'admin_nav.php'; ?>
 
         <h3>Manage Users</h3>
-        <a href="admin_add_new_user.php" class="add-user-btn">+ Add New User</a>
+        <a href="user_addNew.php" class="add-user-btn">+ Add New User</a>
         
         <div class="table-container">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>S.N</th>
-                        <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <?php
-                    $conn = mysqli_connect('localhost', 'root', '', 'summerproject');
-                    $sql1 = "SELECT * FROM users";
-                    $res = mysqli_query($conn, $sql1);
-                    $data = [];
-                    if(mysqli_num_rows($res) > 0){
-                        while($row = mysqli_fetch_assoc($res)){
-                            $data[] = $row;
-                        }
-                    }
-                ?>
-
-                <?php 
+                    $stmt = $conn->prepare("SELECT userID, email, userRole FROM users");
+                    $stmt->execute();
+                    $data = $stmt->get_result();
+            
                 $i = 1;
                 foreach($data as $d){
                 ?>
                 <tbody>
                     <tr>
                         <td><?php echo $i++; ?></td>
-                        <td><?php echo $d['name']; ?></td>
                         <td><?php echo $d['email']; ?></td>
-                        <td><a href="edit_user.php?id=<?php echo $d['id']; ?>">Edit</a>
-                        <a href="delete_user.php?id=<?php echo $d['id']; ?>" 
+                        <td><?php echo $d['userRole']; ?></td>
+                        <td><a href="user_edit.php?id=<?php echo $d['userID']; ?>">Edit</a>
+                        <a href="user_delete.php?id=<?php echo $d['userID']; ?>" 
                         onclick="return confirm('Are you sure to delete?')">Delete</a></td>
                     </tr>
 
