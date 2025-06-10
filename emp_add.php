@@ -83,8 +83,10 @@ include 'admin_nav.php';
             <select name="department" id="department">
                 <option value="">Select a department</option>
                 <option value="HR">HR</option>
+                <option value="finance">Finance</option>
+                <option value="eng">Engineering</option>
                 <option value="IT">IT</option>
-                <option value="ACC">ACC</option>
+                <option value="r&d">Research and Development</option>
             </select>
             <p id="deptError" class="Error-class" style="display: none;"></p>
         </div>
@@ -109,7 +111,6 @@ include 'admin_nav.php';
 </div> 
 
 <script>
-    // Client-side validation
     const form = document.getElementById("empForm");
     const fullnameInput = document.getElementById("fullname");
     const emailInput = document.getElementById("email");
@@ -121,29 +122,58 @@ include 'admin_nav.php';
     const nameError = document.getElementById("nameError");
     const emailError = document.getElementById("emailError");
     const phoneError = document.getElementById("phoneError");
-    const deptError = document.getElementById("positionError");
-    const positionError = document.getElementById("deptError");
+    const deptError = document.getElementById("deptError");
+    const positionError = document.getElementById("positionError");
     const salaryError = document.getElementById("salaryError");
 
-    // Function to validate email format
-        function isValidEmail(email) {
-            // Corrected regex for email validation
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return emailRegex.test(email);
-        }
+    function isValidEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    }
+
+    // Live input clearing
+    fullnameInput.addEventListener("input", () => {
+        nameError.style.display = "none";
+        fullnameInput.style.borderColor = "#ddd";
+    });
+
+    emailInput.addEventListener("input", () => {
+        emailError.style.display = "none";
+        emailInput.style.borderColor = "#ddd";
+    });
+
+    phoneInput.addEventListener("input", () => {
+        phoneError.style.display = "none";
+        phoneInput.style.borderColor = "#ddd";
+    });
+
+    deptInput.addEventListener("change", () => {
+        deptError.style.display = "none";
+        deptInput.style.borderColor = "#ddd";
+    });
+
+    positionInput.addEventListener("change", () => {
+        positionError.style.display = "none";
+        positionInput.style.borderColor = "#ddd";
+    });
+
+    salaryInput.addEventListener("input", () => {
+        salaryError.style.display = "none";
+        salaryInput.style.borderColor = "#ddd";
+    });
 
     form.addEventListener("submit", function (event) {
         let valid = true;
 
         // Reset errors
-    [nameError, emailError, phoneError, deptError, positionError, salaryError].forEach(error => {
-        error.textContent = "";
-        error.style.display = "none";
-    });
+        [nameError, emailError, phoneError, deptError, positionError, salaryError].forEach(error => {
+            error.textContent = "";
+            error.style.display = "none";
+        });
 
-    [fullnameInput, emailInput, phoneInput, deptInput, positionInput, salaryInput].forEach(input => {
-        input.style.borderColor = "#ddd";
-    });
+        [fullnameInput, emailInput, phoneInput, deptInput, positionInput, salaryInput].forEach(input => {
+            input.style.borderColor = "#ddd";
+        });
 
         const name = fullnameInput.value.trim();
         const email = emailInput.value.trim();
@@ -152,7 +182,6 @@ include 'admin_nav.php';
         const position = positionInput.value;
         const salary = salaryInput.value;
 
-        //full name validation
         if(name === ''){
             nameError.textContent = "Name cannot be empty.";
             nameError.style.display = "block";
@@ -160,7 +189,6 @@ include 'admin_nav.php';
             valid = false;
         }
 
-        // Email Validation
         if (email === "") {
             emailError.textContent = "Email cannot be empty.";
             emailError.style.display = "block";
@@ -173,53 +201,49 @@ include 'admin_nav.php';
             valid = false;
         }
 
-        // Phone Validation
         if(phone === ''){
             phoneError.textContent = "Phone cannot be empty.";
             phoneError.style.display = "block";
             phoneInput.style.borderColor = "red";
             valid = false;
         } else if (!/^\d{10}$/.test(phone)) {
-                phoneError.textContent = "Phone number must be 10 digits.";
-                phoneError.style.display = "block";
-                phoneInput.style.borderColor = "red";
-                valid = false;
+            phoneError.textContent = "Phone number must be 10 digits.";
+            phoneError.style.display = "block";
+            phoneInput.style.borderColor = "red";
+            valid = false;
         }
 
-        // Department Validation
         if(dept === ''){
             deptError.textContent = "Department cannot be empty.";
             deptError.style.display = "block";
             deptInput.style.borderColor = "red";
             valid = false;
         }
-        
-        //Position validation
-        if(position ===''){
+
+        if(position === ''){
             positionError.textContent = "Position cannot be empty.";
             positionError.style.display = "block";
             positionInput.style.borderColor = "red";
             valid = false;
         }
 
-        //Salary validation
         if(salary === ''){
             salaryError.textContent = "Salary cannot be empty.";
             salaryError.style.display = "block";
             salaryInput.style.borderColor = "red";
             valid = false;
-        }  else if (isNaN(salary) || Number(salary) <= 0) {
-                salaryError.textContent = "Salary must be a positive number.";
-                salaryError.style.display = "block";
-                salaryInput.style.borderColor = "red";
-                valid = false;
+        } else if (isNaN(salary) || Number(salary) <= 0) {
+            salaryError.textContent = "Salary must be a positive number.";
+            salaryError.style.display = "block";
+            salaryInput.style.borderColor = "red";
+            valid = false;
         }
 
         if (!valid) {
-                event.preventDefault(); // Stop form submission if validation fails
-            }
+            event.preventDefault();
+        }
     });
-
 </script>
+
 </body>
 </html>

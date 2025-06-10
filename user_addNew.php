@@ -109,6 +109,22 @@ include 'admin_nav.php';
         return emailRegex.test(email);
     }
 
+    // Live input clearing
+    emailInput.addEventListener("input", () => {
+        emailError.style.display = "none";
+        emailInput.style.borderColor = "#ddd";
+    });
+
+    passwordInput.addEventListener("input", () => {
+        passwordError.style.display = "none";
+        passwordInput.style.borderColor = "#ddd";
+    });
+
+    roleInput.addEventListener("change", () => {
+        roleError.style.display = "none";
+        roleInput.style.borderColor = "#ddd";
+    });
+
     form.addEventListener("submit", function (event) {
         let valid = true;
 
@@ -167,7 +183,6 @@ include 'admin_nav.php';
             event.preventDefault();
         }
     });
-
-
 </script>
+
 </html>
