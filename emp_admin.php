@@ -206,8 +206,8 @@
                                 <td>
                                     <a href="edit_emp.php?id=<?php echo htmlspecialchars($d['EmployeeID']); ?>" class="btn btn-warning btn-sm">Edit</a>
                                     <a href="delete_emp.php?id=<?php echo htmlspecialchars($d['EmployeeID']); ?>"
-                                       class="btn btn-danger btn-sm"
-                                       onclick="return confirm('Are you sure you want to delete this employee?');">Delete</a>
+                                       class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this employee?');">Delete</a>
+                                       <a href="pay_emp.php?id=<?php echo htmlspecialchars($d['EmployeeID']); ?>" class="btn btn-success btn-sm">Pay</a>
                                 </td>
                             </tr>
                             <?php
